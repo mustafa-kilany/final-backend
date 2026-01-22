@@ -29,8 +29,6 @@ function mapOpenFdaResultToItem(result) {
   ])
 
   const manufacturer = pickFirstNonEmpty([result?.company_name]) || '—'
-
-  // Category is best-effort; openFDA UDI is not a stock catalog.
   const category = pickFirstNonEmpty([
     Array.isArray(result?.product_codes) ? result.product_codes?.[0]?.openfda?.medical_specialty_description : null,
     Array.isArray(result?.product_codes) ? result.product_codes?.[0]?.openfda?.device_class : null,
@@ -206,7 +204,6 @@ function mapOpenFdaDeviceResult(result, { includeProductCodes } = {}) {
     version_or_model_number: result?.version_or_model_number ?? null,
     device_description: result?.device_description ?? null,
 
-    // Medical-focused fields (no product code objects)
     medical_device_names: deviceNames,
     device_classes: deviceClasses,
     regulation_numbers: regulationNumbers,
@@ -257,7 +254,6 @@ async function fetchOpenFdaDevices(req, res, next) {
         timeout: 20000,
       })
     } catch (err) {
-      // openFDA returns 404 for no matches; treat as empty result set.
       if (err?.response?.status === 404) {
         return res.json({
           source: 'openfda',
@@ -293,8 +289,6 @@ async function fetchOpenFdaDevices(req, res, next) {
       limit,
       skip,
       total: typeof metaTotal === 'number' ? metaTotal : null,
-      // Returning both keys so your frontend can use either:
-      // devices.data.result.map(...) OR devices.data.results.map(...)
       result: mapped,
       results: mapped,
     })

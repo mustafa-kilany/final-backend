@@ -69,8 +69,6 @@ async function listRequests(req, res, next) {
 
     const query = {}
     if (status) query.status = status
-
-    // Admin can see everything. Other roles only see their own requests.
     if (req.user.role !== 'admin') {
       query.requestedBy = req.user.id
     }
@@ -130,9 +128,6 @@ async function approveRequest(req, res, next) {
       res.status(404)
       throw new Error('Item not found')
     }
-
-    // Approval represents a completed purchase / restock.
-    // Stock is increased only through this admin approval flow.
     item.qty = (Number(item.qty) || 0) + request.qty
     await item.save()
 

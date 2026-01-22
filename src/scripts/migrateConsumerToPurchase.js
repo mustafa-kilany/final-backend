@@ -20,15 +20,12 @@ async function main() {
 
   const modified = result.modifiedCount ?? result.nModified ?? 0
   const matched = result.matchedCount ?? result.n ?? 0
-
-  // eslint-disable-next-line no-console
   console.log(`Migrated users: matched=${matched} modified=${modified}`)
 
   await mongoose.disconnect()
 }
 
 main().catch((err) => {
-  // eslint-disable-next-line no-console
   console.error(err)
   process.exitCode = 1
 })

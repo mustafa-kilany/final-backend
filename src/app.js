@@ -30,8 +30,6 @@ app.use(
 app.get('/', (req, res) => {
   res.json({ message: 'InventoryGo API' })
 })
-
-// Logs requests that actually touched MongoDB (controllers set req._dbTouched = true)
 app.use(dbRequestLogger)
 
 app.use('/api/auth', authRoutes)

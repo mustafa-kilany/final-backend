@@ -1,1 +1,1 @@
-// (intentionally removed) Health endpoint removed from backend.
+module.exports = {}

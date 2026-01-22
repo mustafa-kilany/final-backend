@@ -18,7 +18,6 @@ async function seedAdmin() {
 
   const existing = await User.findOne({ email })
   if (existing) {
-    // eslint-disable-next-line no-console
     console.log('Admin already exists:', existing.email)
     return
   }
@@ -31,14 +30,12 @@ async function seedAdmin() {
     role: 'admin',
   })
 
-  // eslint-disable-next-line no-console
   console.log('Seeded admin:', user.email)
 }
 
 seedAdmin()
   .then(() => process.exit(0))
   .catch((err) => {
-    // eslint-disable-next-line no-console
     console.error('Seed admin failed:', err)
     process.exit(1)
   })

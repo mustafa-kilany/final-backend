@@ -106,8 +106,6 @@ async function seedOpenFdaInventory({
   }
 
   let items = results.map(mapOpenFdaResultToItem).filter((i) => i.openfdaRecordKey && i.name)
-
-  // If a narrow term/productCode yields nothing, fall back to a broad published query so the app starts with data.
   let searchUsed = primarySearch
   if (items.length === 0 && (String(term || '').trim() || String(productCode || '').trim())) {
     const fallbackSearch = 'record_status:Published'
@@ -119,7 +117,6 @@ async function seedOpenFdaInventory({
         searchUsed = fallbackSearch
       }
     } catch {
-      // Ignore fallback failure; keep items as empty.
     }
   }
 
@@ -127,7 +124,6 @@ async function seedOpenFdaInventory({
     return { seeded: false, reason: 'no-results', search: searchUsed }
   }
 
-  // Only purge after we've successfully fetched some items.
   if (purgeNonFda) {
     await Item.deleteMany({
       $or: [

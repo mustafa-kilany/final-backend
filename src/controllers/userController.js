@@ -31,8 +31,6 @@ async function createUser(req, res, next) {
     if (role === 'admin' || role === 'purchase') {
       userRole = role
     }
-
-    // Backward compatibility: treat legacy "consumer" as "purchase"
     if (role === 'consumer') {
       userRole = 'purchase'
     }

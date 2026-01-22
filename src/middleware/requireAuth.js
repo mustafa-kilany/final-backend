@@ -6,7 +6,6 @@ function toSafeRole(role) {
 
 async function requireAuth(req, res, next) {
   try {
-   
     const headerUserId = String(req.header('x-user-id') || '').trim()
     const headerUserEmail = String(req.header('x-user-email') || '').trim().toLowerCase()
 
@@ -17,7 +16,6 @@ async function requireAuth(req, res, next) {
     } else if (headerUserEmail) {
       user = await User.findOne({ email: headerUserEmail })
     } else {
-      // Dev-friendly fallback: use first admin user, else first user.
       user = (await User.findOne({ role: 'admin' })) || (await User.findOne({}))
     }
 
